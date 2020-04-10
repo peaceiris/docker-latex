@@ -86,7 +86,7 @@ jobs:
           echo "${GITHUB_TOKEN}" | docker login docker.pkg.github.com -u peaceiris --password-stdin
           echo "${DOCKER_HUB_TOKEN}" | docker login -u peaceiris --password-stdin
 
-      - name: Push to GitHub texliveages
+      - name: Push to GitHub Packages
         if: github.event_name != 'pull_request'
         run: docker push "${PKG_TAG}"
 
