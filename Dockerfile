@@ -13,4 +13,4 @@ RUN apt-get update && \
 
 WORKDIR /work
 
-ENTRYPOINT ["/usr/bin/latex"]
+CMD ["/usr/bin/pdflatex"]
