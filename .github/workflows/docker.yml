@@ -4,24 +4,36 @@ on:
   push:
     branches:
       - master
-    paths-ignore:
-      - "**.md"
+    paths:
+      - '.dockerignore'
+      - '.github/**'
+      - '.hadolint.yaml'
+      - 'Dockerfile'
   release:
     types: published
   pull_request:
     types:
       - opened
       - synchronize
-    paths-ignore:
-      - "**.md"
+    paths:
+      - '.dockerignore'
+      - '.github/**'
+      - '.hadolint.yaml'
+      - 'Dockerfile'
 
 env:
   DOCKER_BASE_NAME: docker.pkg.github.com/${{ github.repository }}/latex
   DOCKER_HUB_BASE_NAME: peaceiris/latex
 
 jobs:
+  skipci:
+    runs-on: ubuntu-18.04
+    steps:
+      - run: echo "[skip ci] ${{ contains(github.event.head_commit.message, '[skip ci]') }}"
+
   hadolint:
     runs-on: macos-latest
+    if: contains(github.event.head_commit.message, '[skip ci]') == false
     steps:
       - uses: actions/checkout@v2
       - run: brew install hadolint
@@ -30,6 +42,7 @@ jobs:
   push:
     runs-on: ubuntu-18.04
     needs: hadolint
+    if: contains(github.event.head_commit.message, '[skip ci]') == false
     strategy:
       matrix:
         texlive:
