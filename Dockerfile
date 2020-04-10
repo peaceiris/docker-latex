@@ -2,12 +2,15 @@ FROM ubuntu:18.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
+ARG TEXLIVE_NAME
+ENV TEXLIVE_NAME ${TEXLIVE_NAME}
+
 RUN apt-get update && \
-    apt-get upgrade -y && \
-    apt-get install -y \
-    texlive-latex-extra \
-    vim
+    apt-get install --no-install-recommends -y \
+    "texlive-${TEXLIVE_NAME}" \
+    vim && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /work
 
-CMD ["bash"]
+ENTRYPOINT ["/usr/bin/latex"]
