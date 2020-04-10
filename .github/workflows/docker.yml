@@ -75,7 +75,7 @@ jobs:
           docker tag "${PKG_TAG}" "${HUB_TAG}"
 
       - run: docker images
-      - run: docker run --rm ${PKG_TAG} --version
+      - run: docker run --rm ${PKG_TAG} latex --version
 
       - name: Login to Registries
         if: github.event_name != 'pull_request'
