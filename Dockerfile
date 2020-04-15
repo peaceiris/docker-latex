@@ -8,6 +8,7 @@ ENV TEXLIVE_NAME ${TEXLIVE_NAME}
 RUN apt-get update && \
     apt-get install --no-install-recommends -y \
     "texlive-${TEXLIVE_NAME}" \
+    xpdf \
     vim && \
     rm -rf /var/lib/apt/lists/*
 
