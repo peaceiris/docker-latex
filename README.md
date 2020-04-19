@@ -11,14 +11,46 @@ docker pull peaceiris/latex:latest
 docker pull peaceiris/latex:latest-full
 ```
 
-## Build tex file
+
+## Compile tex file
 
 ```sh
 docker run --rm -i -t -v ${PWD}:/work peaceiris/latex:latest paper.tex
 ```
 
-- The default command is `pdflatex`.
+- The default command is `latexmk`.
 - `paper.pdf` will be generated.
+
+
+## docker-compose
+
+```yaml
+# docker-compose.yml
+
+version: "3"
+
+services:
+  latex:
+    container_name: paper_2020
+    image: peaceiris/latex:v1.1.0-full
+    volumes:
+      - ${PWD}:/work
+    environment:
+      - DISPLAY=docker.for.mac.localhost:0
+    stdin_open: true
+    tty: true
+    working_dir: /work
+    command: latexmk -pdf -pvc
+```
+
+```perl
+# .latexmkrc
+@default_files = ('paper.tex');
+```
+
+```sh
+docker-compose up
+```
 
 
 ## References

@@ -14,4 +14,4 @@ RUN apt-get update && \
 
 WORKDIR /work
 
-CMD ["/usr/bin/pdflatex"]
+CMD ["/usr/bin/latexmk"]
