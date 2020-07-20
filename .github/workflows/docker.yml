@@ -3,7 +3,7 @@ name: Docker CI/CD
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - '.dockerignore'
       - '.github/**'
