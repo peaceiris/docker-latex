@@ -44,18 +44,11 @@ jobs:
           - "full=2017.20180305-1"
     steps:
       - uses: actions/checkout@v2
-
-#       - name: Build ${{ matrix.texlive }} image
-#         run: |
-#           docker build . -t "${PKG_TAG}" --build-arg TEXLIVE_NAME="${{ matrix.texlive }}"
-
-      - run: docker images
-#       - run: docker run --rm ${PKG_TAG} latex --version
-
-      - name: Login to Registries
-        if: github.event_name != 'pull_request'
+      - name: Login to Packages
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login 'docker.pkg.github.com' -u 'peaceiris' --password-stdin
-
-#       - name: Push to GitHub Packages
-#         if: github.event_name != 'pull_request'
-#         run: docker push "${PKG_TAG}"
+      - run: docker-compose pull --quiet
+        if: github.event_name == 'pull_request'
+      - run: docker-compose build --build-arg TEXLIVE_NAME="${{ matrix.texlive }}"
+      - run: docker images
+      - run: docker-compose push
+        if: github.ref == 'refs/heads/main'

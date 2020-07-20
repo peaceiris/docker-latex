@@ -1,38 +1,16 @@
 ## Docker Image for LaTeX
 
 
-## Pull image
 
-```sh
-# texlive-latex-extra
-docker pull peaceiris/latex:latest
-
-# texlive-full
-docker pull peaceiris/latex:latest-full
-```
-
-
-## Compile tex file
-
-```sh
-docker run --rm -i -t -v ${PWD}:/work peaceiris/latex:latest paper.tex
-```
-
-- The default command is `latexmk`.
-- `paper.pdf` will be generated.
-
-
-## docker-compose
+## `docker-compose.yml`
 
 ```yaml
-# docker-compose.yml
-
 version: "3"
 
 services:
   latex:
-    container_name: paper_2020
-    image: peaceiris/latex:v1.1.0-full
+    image: 'docker.pkg.github.com/peaceiris/docker-latex/latex:v1.1.0-full'
+    container_name: 'latex_v1.1.0'
     volumes:
       - ${PWD}:/work
     environment:
@@ -51,6 +29,9 @@ services:
 ```sh
 docker-compose up
 ```
+
+`paper.pdf` will be generated.
+
 
 
 ## References
