@@ -9,21 +9,14 @@ on:
       - '.github/**'
       - '.hadolint.yaml'
       - 'Dockerfile'
-  release:
-    types: published
+      - 'ieee-template/**'
   pull_request:
-    types:
-      - opened
-      - synchronize
     paths:
       - '.dockerignore'
       - '.github/**'
       - '.hadolint.yaml'
       - 'Dockerfile'
-
-env:
-  DOCKER_BASE_NAME: docker.pkg.github.com/${{ github.repository }}/latex
-  DOCKER_HUB_BASE_NAME: peaceiris/latex
+      - 'ieee-template/**'
 
 jobs:
   skipci:
@@ -32,11 +25,12 @@ jobs:
       - run: echo "[skip ci] ${{ contains(github.event.head_commit.message, '[skip ci]') }}"
 
   hadolint:
-    runs-on: macos-latest
+    runs-on: ubuntu-18.04
     if: contains(github.event.head_commit.message, '[skip ci]') == false
+    container:
+      image: 'hadolint/hadolint:v1.18.0-alpine'
     steps:
       - uses: actions/checkout@v2
-      - run: brew install hadolint
       - run: hadolint ./Dockerfile
 
   push:
@@ -51,45 +45,17 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "${GITHUB_CONTEXT}"
-
-      - name: Set env
-        run: |
-          if [ "${{ github.event_name }}" = 'release' ]; then
-              export TAG_NAME="${{ github.event.release.tag_name }}"
-          else
-              export TAG_NAME="latest"
-          fi
-          if [ "${{ startsWith(matrix.texlive, 'full') }}" = "true" ]; then
-              export TAG_NAME="${TAG_NAME}-full"
-          fi
-          echo "::set-env name=PKG_TAG::${DOCKER_BASE_NAME}:${TAG_NAME}"
-          echo "::set-env name=HUB_TAG::${DOCKER_HUB_BASE_NAME}:${TAG_NAME}"
-
-      - name: Build ${{ matrix.texlive }} image
-        run: |
-          docker build . -t "${PKG_TAG}" --build-arg TEXLIVE_NAME="${{ matrix.texlive }}"
-          docker tag "${PKG_TAG}" "${HUB_TAG}"
+#       - name: Build ${{ matrix.texlive }} image
+#         run: |
+#           docker build . -t "${PKG_TAG}" --build-arg TEXLIVE_NAME="${{ matrix.texlive }}"
 
       - run: docker images
-      - run: docker run --rm ${PKG_TAG} latex --version
+#       - run: docker run --rm ${PKG_TAG} latex --version
 
       - name: Login to Registries
         if: github.event_name != 'pull_request'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
-        run: |
-          echo "${GITHUB_TOKEN}" | docker login docker.pkg.github.com -u peaceiris --password-stdin
-          echo "${DOCKER_HUB_TOKEN}" | docker login -u peaceiris --password-stdin
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login 'docker.pkg.github.com' -u 'peaceiris' --password-stdin
 
-      - name: Push to GitHub Packages
-        if: github.event_name != 'pull_request'
-        run: docker push "${PKG_TAG}"
-
-      - name: Push to Docker Hub
-        if: github.event_name != 'pull_request'
-        run: docker push "${HUB_TAG}"
+#       - name: Push to GitHub Packages
+#         if: github.event_name != 'pull_request'
+#         run: docker push "${PKG_TAG}"
