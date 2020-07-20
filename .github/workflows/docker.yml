@@ -41,8 +41,8 @@ jobs:
       - uses: actions/checkout@v2
       - name: Login to Packages
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login 'docker.pkg.github.com' -u 'peaceiris' --password-stdin
-      - run: docker-compose pull --quiet
-        if: github.event_name == 'pull_request'
+      # - run: docker-compose pull --quiet
+      #   if: github.event_name == 'pull_request'
       - run: docker-compose build
       - run: docker images
       - name: latexmk -pdf
