@@ -2,12 +2,9 @@ FROM ubuntu:18.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-ARG TEXLIVE_NAME
-ENV TEXLIVE_NAME ${TEXLIVE_NAME}
-
 RUN apt-get update && \
     apt-get install --no-install-recommends -y \
-    "texlive-${TEXLIVE_NAME}" \
+    "texlive-full=2017.20180305-1" \
     xpdf \
     vim && \
     rm -rf /var/lib/apt/lists/*
