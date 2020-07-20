@@ -9,7 +9,7 @@ services:
         - 'docker.pkg.github.com/peaceiris/docker-latex/latex:v1.1.0-full'
     container_name: 'latex_v1.1.0'
     volumes:
-      - ${PWD}:/work
+      - ${PWD}/ieee-template:/work
     stdin_open: true
     tty: true
     working_dir: /work

@@ -50,5 +50,7 @@ jobs:
         if: github.event_name == 'pull_request'
       - run: docker-compose build --build-arg TEXLIVE_NAME="${{ matrix.texlive }}"
       - run: docker images
+      - name: latexmk -pdf
+        run: docker-compose run --rm -T latex latexmk -pdf
       - run: docker-compose push
         if: github.ref == 'refs/heads/main'
