@@ -37,25 +37,15 @@ jobs:
     runs-on: ubuntu-18.04
     needs: hadolint
     if: contains(github.event.head_commit.message, '[skip ci]') == false
-    strategy:
-      matrix:
-        texlive:
-          - "latex-extra=2017.20180305-2"
-          - "full=2017.20180305-1"
     steps:
       - uses: actions/checkout@v2
-
-#       - name: Build ${{ matrix.texlive }} image
-#         run: |
-#           docker build . -t "${PKG_TAG}" --build-arg TEXLIVE_NAME="${{ matrix.texlive }}"
-
-      - run: docker images
-#       - run: docker run --rm ${PKG_TAG} latex --version
-
-      - name: Login to Registries
-        if: github.event_name != 'pull_request'
+      - name: Login to Packages
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login 'docker.pkg.github.com' -u 'peaceiris' --password-stdin
-
-#       - name: Push to GitHub Packages
-#         if: github.event_name != 'pull_request'
-#         run: docker push "${PKG_TAG}"
+      # - run: docker-compose pull --quiet
+      #   if: github.event_name == 'pull_request'
+      - run: docker-compose build
+      - run: docker images
+      - name: latexmk -pdf
+        run: docker-compose run --rm -T latex latexmk -pdf
+      - run: docker-compose push
+        if: github.ref == 'refs/heads/main'
