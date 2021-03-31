@@ -9,7 +9,7 @@ version: "3"
 
 services:
   latex:
-    image: 'docker.pkg.github.com/peaceiris/docker-latex/latex:v1.1.0-full'
+    image: 'ghcr.io/peaceiris/docker-latex/latex:v1.1.0-full'
     container_name: 'latex_v1.1.0'
     volumes:
       - ${PWD}:/work
@@ -34,7 +34,7 @@ docker-compose up
 
 
 
-## References
+## Test
 
 - [IEEE - Manuscript Templates for Conference Proceedings](https://www.ieee.org/conferences/publishing/templates.html)
 - [How to install LaTex on Ubuntu 18.04 Bionic Beaver Linux - LinuxConfig.org](https://linuxconfig.org/how-to-install-latex-on-ubuntu-18-04-bionic-beaver-linux)
