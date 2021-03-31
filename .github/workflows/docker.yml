@@ -9,14 +9,12 @@ on:
       - '.github/**'
       - '.hadolint.yaml'
       - 'Dockerfile'
-      - 'ieee-template/**'
   pull_request:
     paths:
       - '.dockerignore'
       - '.github/**'
       - '.hadolint.yaml'
       - 'Dockerfile'
-      - 'ieee-template/**'
 
 jobs:
   hadolint:
