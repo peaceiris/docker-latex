@@ -9,7 +9,7 @@ version: "3"
 
 services:
   latex:
-    image: 'ghcr.io/peaceiris/docker-latex/latex:v1.1.0-full'
+    image: 'ghcr.io/peaceiris/latex:v1.1.0-full'
     container_name: 'latex_v1.1.0'
     volumes:
       - ${PWD}:/work

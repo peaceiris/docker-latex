@@ -5,22 +5,22 @@ on:
     branches:
       - main
     paths:
-      - '.dockerignore'
-      - '.github/**'
-      - '.hadolint.yaml'
-      - 'Dockerfile'
+      - ".dockerignore"
+      - ".github/**"
+      - ".hadolint.yaml"
+      - "Dockerfile"
   pull_request:
     paths:
-      - '.dockerignore'
-      - '.github/**'
-      - '.hadolint.yaml'
-      - 'Dockerfile'
+      - ".dockerignore"
+      - ".github/**"
+      - ".hadolint.yaml"
+      - "Dockerfile"
 
 jobs:
   hadolint:
     runs-on: ubuntu-18.04
     container:
-      image: 'ghcr.io/hadolint/hadolint:v2.0.0-alpine'
+      image: "ghcr.io/hadolint/hadolint:v2.0.0-alpine"
     steps:
       - uses: actions/checkout@v2
       - run: hadolint ./Dockerfile
@@ -34,7 +34,7 @@ jobs:
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u peaceiris --password-stdin
       - run: docker-compose build
       - run: docker images
-#       - name: latexmk -pdf
-#         run: docker-compose run --rm -T latex latexmk -pdf
+      # - name: latexmk -pdf
+      #   run: docker-compose run --rm -T latex latexmk -pdf
       - run: docker-compose push
         if: github.ref == 'refs/heads/main'
