@@ -2,11 +2,11 @@ version: "3.2"
 
 services:
   latex:
-    image: 'docker.pkg.github.com/peaceiris/docker-latex/latex:v1.1.0-full'
+    image: 'ghcr.io/peaceiris/docker-latex/latex:v1.1.0-full'
     build:
       context: .
       cache_from:
-        - 'docker.pkg.github.com/peaceiris/docker-latex/latex:v1.1.0-full'
+        - 'ghcr.io/peaceiris/docker-latex/latex:v1.1.0-full'
     container_name: 'latex_v1.1.0'
     volumes:
       - ${PWD}/ieee-template:/work

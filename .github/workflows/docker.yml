@@ -9,14 +9,12 @@ on:
       - '.github/**'
       - '.hadolint.yaml'
       - 'Dockerfile'
-      - 'ieee-template/**'
   pull_request:
     paths:
       - '.dockerignore'
       - '.github/**'
       - '.hadolint.yaml'
       - 'Dockerfile'
-      - 'ieee-template/**'
 
 jobs:
   hadolint:
@@ -33,12 +31,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Login to Packages
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login 'docker.pkg.github.com' -u 'peaceiris' --password-stdin
-      # - run: docker-compose pull --quiet
-      #   if: github.event_name == 'pull_request'
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u peaceiris --password-stdin
       - run: docker-compose build
       - run: docker images
-      - name: latexmk -pdf
-        run: docker-compose run --rm -T latex latexmk -pdf
+#       - name: latexmk -pdf
+#         run: docker-compose run --rm -T latex latexmk -pdf
       - run: docker-compose push
         if: github.ref == 'refs/heads/main'
