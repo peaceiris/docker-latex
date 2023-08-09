@@ -18,7 +18,7 @@ on:
 
 jobs:
   hadolint:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     container:
       image: "ghcr.io/hadolint/hadolint:v2.12.0-alpine"
     steps:
@@ -26,7 +26,7 @@ jobs:
       - run: hadolint ./Dockerfile
 
   push:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     needs: hadolint
     steps:
       - uses: actions/checkout@v2
