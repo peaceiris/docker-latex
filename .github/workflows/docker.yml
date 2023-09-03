@@ -22,14 +22,14 @@ jobs:
     container:
       image: "ghcr.io/hadolint/hadolint:v2.12.0-alpine"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - run: hadolint ./Dockerfile
 
   push:
     runs-on: ubuntu-18.04
     needs: hadolint
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Login to Packages
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u peaceiris --password-stdin
       - run: docker-compose build
